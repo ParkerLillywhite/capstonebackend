@@ -40,14 +40,14 @@ def add_id():
     db.session.add(new_id)
     db.session.commit()
 
-    guide = Class.query.get(new_id.id)
+    class_item = Class.query.get(new_id.id)
 
-    return class_schema.jsonify(guide)
+    return class_schema.jsonify(class_item)
 
 @app.route('/id_manual/result', methods=['GET'])
 def get_manual():
-    all_guides = Class.query.all()
-    result = classes_schema.dump(all_guides)
+    all_classes = Class.query.all()
+    result = classes_schema.dump(all_classes)
     return jsonify(result)
     
 
