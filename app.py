@@ -1,5 +1,5 @@
 
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, Response
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask_cors import CORS
@@ -7,6 +7,8 @@ import os
 
 app = Flask(__name__)
 CORS(app)
+
+
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'app.sqlite')
@@ -31,11 +33,17 @@ class ClassSchema(ma.Schema):
 class_schema = ClassSchema()
 classes_schema = ClassSchema(many=True)
 
+
+
 @app.route('/id_manual/post', methods=['POST'])
 def add_id():
+    #response = flask.Response()
+    #response.headers['Access-Control-Allow-Origin'] = "*"
     class_id = request.json['class_id']
     class_name = request.json['class_name']
     class_description = request.json['class_description']
+
+    
 
     new_id = Class(class_id, class_name, class_description)
 
@@ -49,6 +57,7 @@ def add_id():
 @app.route('/id_manual/result', methods=['GET'])
 def get_manual():
     all_classes = Class.query.all()
+    
     result = classes_schema.dump(all_classes)
     return jsonify(result)
     
